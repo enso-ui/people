@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { FontAwesomeIcon as Fa } from '@fortawesome/vue-fontawesome';
 import { Tab } from '@enso-ui/tabs/bulma';
 import { EnsoForm, FormField, Action } from '@enso-ui/forms/bulma';
 import Accessories from '@enso-ui/accessories/bulma';
@@ -65,7 +64,6 @@ export default {
         Addresses,
         EnsoForm,
         Action,
-        Fa,
         FormField,
         Tab,
     },
