@@ -1,7 +1,7 @@
 <template>
     <div class="columns is-centered">
         <div class="column is-three-quarters-desktop is-full-touch">
-            <enso-form class="box form-box has-background-light raises-on-hover"
+            <enso-form class="box form-box"
                 @loaded="companies = $refs.form.field('companies').value"
                 ref="form">
                 <template #companies="props">
@@ -78,7 +78,7 @@ export default {
             label: 'Create User',
         },
         userEdit: {
-            class: 'is-warning',
+            class: 'is-dark',
             icon: 'user',
             label: 'Edit User',
         },
