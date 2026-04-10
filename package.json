@@ -1,6 +1,6 @@
 {
   "name": "@enso-ui/people",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "Basic people package",
   "main": "src/bulma/pages/people/Index.vue",
   "scripts": {
