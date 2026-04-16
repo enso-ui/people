@@ -73,7 +73,7 @@ export default {
     data: () => ({
         companies: [],
         userCreate: {
-            class: 'is-primary',
+            class: 'is-dark',
             icon: 'user',
             label: 'Create User',
         },
