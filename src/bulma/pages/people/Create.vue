@@ -15,24 +15,16 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from 'vue';
+
 import { EnsoForm, FormField } from '@enso-ui/forms/bulma';
 
-export default {
-    name: 'Create',
+defineOptions({ name: 'Create' });
 
-    components: { EnsoForm, FormField },
+const companies = ref([]);
 
-    data: () => ({
-        companies: [],
-    }),
-
-    computed: {
-        params() {
-            return {
-                id: this.companies,
-            };
-        },
-    },
-};
+const params = computed(() => ({
+    id: companies.value,
+}));
 </script>

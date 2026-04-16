@@ -2,7 +2,7 @@
     <div class="columns is-centered">
         <div class="column is-three-quarters-desktop is-full-touch">
             <enso-form class="box form-box"
-                @loaded="companies = $refs.form.field('companies').value"
+                @loaded="handleLoaded"
                 ref="form">
                 <template #companies="props">
                     <form-field v-bind="props"
@@ -14,19 +14,21 @@
                 </template>
                 <template #actions-left>
                     <action tag="a"
-                        :button="userEdit"
-                        @click="$router.push({
-                            name: 'administration.users.edit',
-                            params: { user: $refs.form.param('userId') }
-                        }).catch(routerErrorHandler)"
+                        :button="{
+                            class: 'is-dark',
+                            icon: faUser,
+                            label: 'Edit User',
+                        }"
+                        @click="editUser"
                         v-if="canAccess('administration.users.edit')
-                            && $refs.form.param('userId')"/>
+                            && userId"/>
                     <action tag="a"
-                        :button="userCreate"
-                        @click="$router.push({
-                            name: 'administration.users.create',
-                            params: $route.params,
-                        }).catch(routerErrorHandler)"
+                        :button="{
+                            class: 'is-dark',
+                            icon: faUser,
+                            label: 'Create User',
+                        }"
+                        @click="createUser"
                         v-else-if="canAccess('administration.users.create')"/>
                 </template>
             </enso-form>
@@ -39,8 +41,8 @@
                                 <addresses controls
                                     type="person"
                                     :id="personId"
-                                    @update="count.Addresses = $refs.addresses.count"
-                                    ref="addresses"/>
+                                    @update="count.Addresses = addressesRef.count"
+                                    ref="addressesRef"/>
                             </div>
                         </div>
                     </tab>
@@ -50,49 +52,56 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, inject, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Tab } from '@enso-ui/tabs/bulma';
 import { EnsoForm, FormField, Action } from '@enso-ui/forms/bulma';
 import Accessories from '@enso-ui/accessories/bulma';
 import { Addresses } from '@enso-ui/addresses/bulma';
 
-export default {
-    name: 'Edit',
+defineOptions({ name: 'Edit' });
 
-    components: {
-        Accessories,
-        Addresses,
-        EnsoForm,
-        Action,
-        FormField,
-        Tab,
-    },
+const canAccess = inject('canAccess');
+const routerErrorHandler = inject('routerErrorHandler');
 
-    inject: ['canAccess', 'i18n', 'routerErrorHandler'],
+const route = useRoute();
+const router = useRouter();
 
-    data: () => ({
-        companies: [],
-        userCreate: {
-            class: 'is-dark',
-            icon: 'user',
-            label: 'Create User',
-        },
-        userEdit: {
-            class: 'is-dark',
-            icon: 'user',
-            label: 'Edit User',
-        },
-    }),
+const addressesRef = ref(null);
+const companies = ref([]);
+const form = ref(null);
 
-    computed: {
-        personId() {
-            return Number.parseInt(this.$route.params.person, 10);
-        },
-        params() {
-            return {
-                id: this.companies,
-            };
-        },
-    },
+const userCreate = {
+    class: 'is-dark',
+    icon: 'user',
+    label: 'Create User',
 };
+
+const userEdit = {
+    class: 'is-dark',
+    icon: 'user',
+    label: 'Edit User',
+};
+
+const personId = computed(() => Number.parseInt(route.params.person, 10));
+const params = computed(() => ({
+    id: companies.value,
+}));
+const userId = computed(() => form.value?.param('userId'));
+
+const handleLoaded = () => {
+    companies.value = form.value.field('companies').value;
+};
+
+const editUser = () => router.push({
+    name: 'administration.users.edit',
+    params: { user: userId.value },
+}).catch(routerErrorHandler);
+
+const createUser = () => router.push({
+    name: 'administration.users.create',
+    params: route.params,
+}).catch(routerErrorHandler);
 </script>
