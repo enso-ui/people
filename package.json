@@ -1,7 +1,7 @@
 {
   "name": "@enso-ui/people",
   "version": "5.2.4",
-  "description": "Basic people package",
+  "description": "People administration pages for Enso UI",
   "main": "src/bulma/pages/people/Index.vue",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
